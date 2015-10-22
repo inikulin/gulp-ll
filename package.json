@@ -1,0 +1,37 @@
+{
+  "name": "gulp-ll",
+  "version": "1.0.0",
+  "description": "Run CPU-consuming Gulp tasks in the separate processes",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inikulin/gulp-ll.git"
+  },
+  "keywords": [
+    "gulp",
+    "multiprocess",
+    "process",
+    "thread",
+    "threads",
+    "heavy",
+    "cpu",
+    "fast",
+    "task"
+  ],
+  "author": "Ivan Nikulin <ifaaan@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/inikulin/gulp-ll/issues"
+  },
+  "homepage": "https://github.com/inikulin/gulp-ll#readme",
+  "files": [
+    "index.js"
+  ],
+  "dependencies": {
+    "gulp-util": "^3.0.7",
+    "pinkie-promise": "^1.0.0"
+  }
+}
