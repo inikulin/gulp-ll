@@ -48,24 +48,18 @@ function runGulp (param) {
 
 var expectedTasks = ['task1', 'task2', 'task3', 'task4', 'task5'];
 
-test('Should run tasks in parallel', function (done) {
-    runGulp()
+test('Should run tasks in parallel', function () {
+    return runGulp()
         .then(function (runInfo) {
             assert.deepEqual(runInfo.tasks, expectedTasks);
             assert.strictEqual(runInfo.processCount, 4);
-
-            done();
-        })
-        .catch(done);
+        });
 });
 
-test('Should not run tasks in parallel if --no-ll flag is specified', function (done) {
-    runGulp('--no-ll')
+test('Should not run tasks in parallel if --no-ll flag is specified', function () {
+    return runGulp('--no-ll')
         .then(function (runInfo) {
             assert.deepEqual(runInfo.tasks, expectedTasks);
             assert.strictEqual(runInfo.processCount, 1);
-
-            done();
-        })
-        .catch(done);
+        });
 });
