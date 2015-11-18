@@ -20,9 +20,9 @@ function GulpLL () {
     this.isDebug  = typeof v8debug !== 'undefined' || process.argv.indexOf('--ll-debug') > -1;
     this.isWorker = process.argv.indexOf('--ll-worker') > -1;
 
-    this.args = process.argv.slice(1).filter(function (arg) {
+    this.args = process.argv.slice(1).filter(function (arg, idx) {
         // NOTE: remove debugger breakpoints from worker args
-        return arg.indexOf('--debug-brk') < 0;
+        return arg.indexOf('--debug-brk') < 0 && (idx !== 0 || arg !== 'debug');
     });
 
     if (process.argv.indexOf('--no-ll') < 0)

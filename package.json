@@ -2,7 +2,7 @@
   "name": "gulp-ll",
   "version": "1.0.0",
   "description": "Run CPU-consuming Gulp tasks in the separate processes",
-  "main": "index.js",
+  "main": "./index.js",
   "scripts": {
     "test": "mocha"
   },
@@ -33,5 +33,9 @@
   "dependencies": {
     "gulp-util": "^3.0.7",
     "pinkie-promise": "^1.0.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "mocha": "^2.3.4"
   }
 }
