@@ -63,7 +63,7 @@ ll
 ```
 
 ## How I can debug task if it's in separate process?
-You can just disable *gulp-ll* then by running Gulp with `--no-ll` parameter:
+You can just disable *gulp-ll* by running Gulp with `--no-ll` parameter:
 ```
 gulp my-task --no-ll
 ```
