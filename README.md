@@ -62,6 +62,12 @@ ll
     .onlyInDebug('compile-scripts', 'build-templates');
 ```
 
+## How I can debug task if it's in separate process?
+You can just disable *gulp-ll* then by running Gulp with `--no-ll` parameter:
+```
+gulp my-task --no-ll
+```
+
 ## Caveats
 More likely *gulp-ll* will not work for you if you have global variables set by one task and used by another.
 Apart from the topic, I suggest you to never do so.
