@@ -45,7 +45,7 @@ And we're set :tada:
 It depends. Node processes are quite slow to spawn. So, running tasks in the separate processes could be
 slower than executing them sequentially in the single process. You need to play a little bit with the
 configuration (using `time gulp your-task`) to figure out the optimal one. E.g. I was able to reach maximum
-performance (approx. 30% faster) by paralleling the heaviest CPU-consuming task out of 3 in my project.
+performance (approx. 30% faster) by using *gulp-ll* only for the the heaviest CPU-consuming task out of 3 in my project.
 Performance gain also depends on the codebase size: obviously, it will give better results in the big projects.
 
 ## Faster debugging sessions
