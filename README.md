@@ -18,7 +18,7 @@
 
 ## Install
 ```
-npm install gulp-ll
+npm install --save-dev gulp-ll
 ```
 
 ## Usage
