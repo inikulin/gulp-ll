@@ -31,17 +31,26 @@ function GulpLL () {
 
 
 GulpLL.prototype._getWorkerArgs = function (task) {
-    var ll = this;
+    var ll      = this;
+    var taskIdx = null;
 
-    var args = this.args.filter(function (arg) {
-        return ll.allTasks.indexOf(arg) < 0;
+    var args = this.args.filter(function (arg, idx) {
+        var isTaskArg = ll.allTasks.indexOf(arg) > -1;
+
+        if (isTaskArg && taskIdx === null)
+            taskIdx = idx;
+
+        return !isTaskArg;
     });
 
-    args.push('worker:' + task);
+    args.splice(taskIdx === null ? args.length : taskIdx, 0, 'worker:' + task);
+
     args.push('--ll-worker');
 
     if (this.isDebug)
         args.push('--ll-debug');
+
+    console.log(taskIdx);
 
     return args;
 };

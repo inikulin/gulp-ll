@@ -3,6 +3,8 @@ var exec    = require('child_process').exec;
 var path    = require('path');
 var Promise = require('pinkie-promise');
 
+process.chdir('./test');
+
 function getRunInfoFromStdout (stdout) {
     var re       = /%(.+?):(.+?)%/gm;
     var tasks    = [];
@@ -32,14 +34,12 @@ function runGulp (param) {
     return new Promise(function (resolve, reject) {
         var cmd = [
             'gulp',
-            '--gulpfile',
-            path.join(__dirname, 'Gulpfile.js'),
             param || ''
         ].join(' ');
 
         exec(cmd, function (err, stdout) {
             if (err)
-                reject(err);
+                reject(new Error(stdout));
             else
                 resolve(getRunInfoFromStdout(stdout));
         });
@@ -62,4 +62,9 @@ test('Should not run tasks in parallel if --no-ll flag is specified', function (
             assert.deepEqual(runInfo.tasks, expectedTasks);
             assert.strictEqual(runInfo.processCount, 1);
         });
+});
+
+test("Regression - Gulp task is failed when it's run with the --dev argument (GH-1)", function () {
+    // NOTE: smoke test, this should pass without error
+    return runGulp('task3 --dev');
 });
