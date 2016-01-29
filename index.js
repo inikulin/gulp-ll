@@ -50,8 +50,6 @@ GulpLL.prototype._getWorkerArgs = function (task) {
     if (this.isDebug)
         args.push('--ll-debug');
 
-    console.log(taskIdx);
-
     return args;
 };
 
