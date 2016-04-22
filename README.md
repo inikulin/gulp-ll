@@ -30,12 +30,16 @@ var ll   = require('gulp-ll');
 
 ll.tasks(['lint', 'compile-scripts']);
 
-gulp.task('lint', () => {
+gulp.task('lint', ['dep'], () => {
 // Task code...
 });
 
-gulp.task('compile-scripts', () => {
+gulp.task('compile-scripts', ['dep'], () => {
 // Task code...
+});
+
+gulp.task('dep', () => {
+// This task will run in the master process ONCE before 'lint' and 'compile-scripts' begin.
 });
 ```
 
