@@ -68,3 +68,8 @@ test("Regression - Gulp task is failed when it's run with the --dev argument (GH
     // NOTE: smoke test, this should pass without error
     return runGulp('task3 --dev');
 });
+
+test('Regression - Gulp fails when a flag is specified without tasks (GH-5)', function () {
+    // NOTE: smoke test, this should pass without error
+    return runGulp('--dev');
+});
