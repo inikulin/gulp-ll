@@ -1,6 +1,6 @@
 {
   "name": "gulp-ll",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Run CPU-consuming Gulp tasks in the separate processes to achieve faster builds.",
   "main": "./index.js",
   "scripts": {
