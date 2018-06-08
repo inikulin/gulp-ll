@@ -52,7 +52,7 @@ test('Should run tasks in parallel', function () {
     return runGulp()
         .then(function (runInfo) {
             assert.deepEqual(runInfo.tasks, expectedTasks);
-            assert.strictEqual(runInfo.processCount, 4);
+            assert.strictEqual(runInfo.processCount, 3);
         });
 });
 
