@@ -1,6 +1,6 @@
 var spawn       = require('child_process').spawn;
 var gulp        = require('gulp');
-var PluginError = require('gulp-util').PluginError;
+var PluginError = require('plugin-error');
 var Promise     = require('pinkie-promise');
 
 function getTaskListFromArgs (args) {
@@ -30,6 +30,10 @@ function GulpLL () {
 }
 
 
+GulpLL.prototype._getWorkerTaskName = function (taskName) {
+    return 'worker:' + taskName;
+};
+
 GulpLL.prototype._getWorkerArgs = function (task) {
     var ll = this;
 
@@ -37,11 +41,15 @@ GulpLL.prototype._getWorkerArgs = function (task) {
         return ll.allTasks.indexOf(arg) < 0;
     });
 
-    args.splice(1, 0, 'worker:' + task);
-    args.push('--ll-worker');
+    args.splice(1, 0, ll._getWorkerTaskName(task));
 
-    if (this.isDebug)
-        args.push('--ll-debug');
+    if (!this.isWorker) {
+        args.push('--ll-worker');
+        args.push('--steps-as-tasks');
+
+        if (this.isDebug)
+            args.push('--ll-debug');
+    }
 
     return args;
 };
@@ -66,20 +74,49 @@ GulpLL.prototype._isLLTask = function (task) {
     return this.llTasks.indexOf(task) > -1 || (this.isDebug && this.llTasksDebugOnly.indexOf(task) > -1);
 };
 
+GulpLL.prototype._getNameAndFn = function (gulpTaskArgs) {
+    const isNameExplicit = typeof gulpTaskArgs[0] === 'string';
+
+    return {
+        name: isNameExplicit ? gulpTaskArgs[0] : (gulpTaskArgs[0].name || gulpTaskArgs[0].displayName),
+        fn:   isNameExplicit ? gulpTaskArgs[1] : gulpTaskArgs[0],
+
+        isNameExplicit
+    };
+};
+
+GulpLL.prototype._getGulpTaskArgs = function (name, fn, { isNameExplicit }) {
+    let gulpTaskArgs = [];
+
+    if (isNameExplicit)
+        gulpTaskArgs.push(name, fn);
+    else {
+        fn.displayName = name;
+
+        gulpTaskArgs.push(fn);
+    }
+
+    return gulpTaskArgs;
+};
+
+GulpLL.prototype._addTaskToGulp = function (name, fn, { isNameExplicit }) {
+    const ll = this;
+
+    ll.allTasks.push(name);
+    ll.taskFn(...ll._getGulpTaskArgs(name, fn, { isNameExplicit }));
+};
+
 GulpLL.prototype._overrideGulpTaskFn = function () {
     var ll = this;
 
-    gulp.task = function (name, deps, fn) {
-        if (!fn && typeof deps === 'function') {
-            fn   = deps;
-            deps = void 0;
-        }
+    gulp.task = function (...args) {
+        let { name, fn, isNameExplicit } = ll._getNameAndFn(args);
 
         if (ll._isLLTask(name)) {
-            if (ll.isWorker) {
-                deps = void 0;
-                name = 'worker:' + name;
-            }
+            const workerTaskName = ll._getWorkerTaskName(name);
+
+            if (ll.isWorker && ll.args.indexOf(workerTaskName) > -1)
+                ll._addTaskToGulp(workerTaskName, fn, { isNameExplicit });
             else {
                 fn = function () {
                     return ll._createWorker(name);
@@ -87,9 +124,7 @@ GulpLL.prototype._overrideGulpTaskFn = function () {
             }
         }
 
-
-        ll.allTasks.push(name);
-        ll.taskFn(name, deps, fn);
+        ll._addTaskToGulp(name, fn, { isNameExplicit });
     };
 };
 

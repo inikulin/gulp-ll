@@ -1,8 +1,11 @@
 {
   "name": "gulp-ll",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "Run CPU-consuming Gulp tasks in the separate processes to achieve faster builds.",
   "main": "./index.js",
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "scripts": {
     "test": "mocha"
   },
@@ -31,11 +34,11 @@
     "index.js"
   ],
   "dependencies": {
-    "gulp-util": "^3.0.7",
-    "pinkie-promise": "^1.0.0"
+    "pinkie-promise": "^1.0.0",
+    "plugin-error": "^1.0.1"
   },
   "devDependencies": {
-    "gulp": "^3.9.0",
-    "mocha": "^2.3.4"
+    "gulp": "^4.0.0",
+    "mocha": "^5.2.0"
   }
 }
