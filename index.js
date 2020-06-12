@@ -77,6 +77,10 @@ GulpLL.prototype._overrideGulpTaskFn = function () {
 
         if (ll._isLLTask(name)) {
             if (ll.isWorker) {
+                // Also define a task under the original name so gulp's task validation will not complain
+                ll.taskFn(name, function () {
+                    throw new Error('Original task should not be executed in the worker');
+                });
                 deps = void 0;
                 name = 'worker:' + name;
             }
@@ -89,7 +93,11 @@ GulpLL.prototype._overrideGulpTaskFn = function () {
 
 
         ll.allTasks.push(name);
-        ll.taskFn(name, deps, fn);
+        if (deps) {
+            ll.taskFn(name, deps, fn);
+        } else {
+            ll.taskFn(name, fn);
+        }
     };
 };
 
